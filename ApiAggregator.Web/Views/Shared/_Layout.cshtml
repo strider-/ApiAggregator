@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <title>@ViewBag.Title</title>
+        <link href="~/Content/bootstrap.min.css" rel="stylesheet" />                                        
+        <link rel="stylesheet" class="theme" />
+        @RenderSection("styles", false)
+        @Styles.Render("~/Content/Styles/global") 
+    </head>
+    <body>
+        <nav class="navbar navbar-default navbar-static-top" role="navigation"> 
+            <div class="container">
+                <div class="navbar-header">
+                    @Html.ActionLink("Api Aggregator", "Index", "Home", null, new { @class="navbar-brand"})
+                </div>
+                <div class="navbar-collapse collapse">
+                    @if(Request.IsAuthenticated) {
+                        <ul class="nav navbar-nav">                        
+                            @Html.Action("ServicesAndMappings", "Home")
+                            <li>
+                                @Html.ActionLink("Settings", "Index", "Configuration")
+                            </li>
+                        </ul>
+                    }
+                    <ul class="nav navbar-nav navbar-right">
+                        @Html.Partial("_Themes")
+                        @if(Request.IsAuthenticated) {
+                            @Html.Action("LogoutButton", "Account")
+                        }
+                    </ul>                    
+                </div>
+            </div>
+        </nav>        
+        <div class="container content-container">                        
+            @Html.Partial("_Flash")
+            @RenderBody()
+        </div>
+        @Scripts.Render("~/Content/Scripts/global")
+        @RenderSection("scripts", false)
+    </body>
+</html>

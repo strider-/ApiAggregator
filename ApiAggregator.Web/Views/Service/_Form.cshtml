@@ -1,0 +1,138 @@
+﻿@model ServiceModel
+
+@{
+    var templates = ViewBag.ServiceTemplates as IEnumerable<ServiceModel>;
+    var hasTemplates = templates != null && templates.Any();
+}
+
+<div class="row">
+    <fieldset>
+        <div class="form-group">
+            @Html.LabelFor(s => s.Name, new { @class = "col-lg-2 control-label" })
+            <div class="col-lg-4">
+                @if(hasTemplates) {
+                    <div class="input-group">
+                        @Html.TextBoxFor(s => s.Name, new { @class = "form-control", data_content="A friendly reference name for the service." })
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+                            <ul class="dropdown-menu pull-right">
+                                <li><a>Service Templates</a></li>
+                                <li class="divider"></li>
+                                @foreach(var template in templates)
+                                {
+                                    <li>
+                                        <a href="#" class="service-template" data-root-url="@template.RootUrl">@template.Name</a>
+                                        @foreach(var h in template.Headers)
+                                        {
+                                            <span class="service-header" data-name="@h.Header" data-value="@h.Value"></span>
+                                        }
+                                        @foreach(var qs in template.QueryStringAppends)
+                                        {
+                                            <span class="service-qs" data-name="@qs.Name" data-value="@qs.Value"></span>
+                                        }
+                                    </li>
+                                }
+                            </ul>
+                        </div>                    
+                    </div>
+                    @Html.ValidationMessageFor(s => s.Name, null, new { @class="text-danger" })
+                } else {
+                    @Html.TextBoxFor(s => s.Name, new { @class = "form-control", data_content="A friendly reference name for the service." })
+                    @Html.ValidationMessageFor(s => s.Name, null, new { @class="text-danger" })
+                }
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(s => s.RootUrl, new { @class = "col-lg-2 control-label" })
+            <div class="col-lg-4">
+                @Html.TextBoxFor(s => s.RootUrl, new { @class = "form-control", data_content="The root url of the service. Paths are ok, set query string values below." })
+                @Html.ValidationMessageFor(s => s.RootUrl, null, new { @class="text-danger" })
+            </div>
+        </div>
+    <div class="form-group">
+        @Html.LabelFor(s => s.Enabled, new { @class = "col-lg-2 control-label" })
+        <div class="col-lg-2">
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-default btn-option">
+                    @Html.RadioButton("Enabled", true, Model.Enabled == true, new {@class="form-control", data_highlight="btn-success"}) Yes
+                </label>
+                <label class="btn btn-default btn-option">
+                    @Html.RadioButton("Enabled", false, Model.Enabled == false, new {@class="form-control", data_highlight="btn-danger"}) No
+                </label>
+            </div>
+        </div>     
+    </div>
+    </fieldset>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="panel panel-primary">        
+            <div class="panel-heading">
+                <span class="panel-title">Request Headers</span>
+            </div>
+            <div class="panel-body">
+                <p class="text-info">These headers will be sent in all requests for the mappings using this service.</p>
+                <table class="table table-condensed" data-type="Headers" data-count="@Model.Headers.Count">
+                    <thead>
+                        <tr>
+                            <th>Header Name</th>
+                            <th>Value</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @Html.EditorFor(m => m.Headers)
+                    </tbody>
+                </table>
+            </div>
+            <div class="panel-footer">
+                <button type="button" class="btn btn-success btn-xs add-row row-header">
+                    <span class="glyphicon glyphicon-plus"></span> Add
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="panel panel-primary">  
+            <div class="panel-heading">
+                <span class="panel-title">Query String Values</span>
+            </div>
+            <div class="panel-body">
+                <p class="text-info">These query string pairs will be included in requests for the mappings using this service.</p>
+                <table class="table table-condensed" data-type="QueryStringAppends" data-count="@Model.QueryStringAppends.Count">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Value</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @Html.EditorFor(m => m.QueryStringAppends)
+                    </tbody>
+                </table>
+            </div>
+            <div class="panel-footer">
+                <button type="button" class="btn btn-success btn-xs add-row row-qs">
+                    <span class="glyphicon glyphicon-plus"></span> Add
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row well well-sm">
+    @Html.HiddenFor(s => s.Id)
+    <button type="submit" class="btn btn-primary">
+        <span class="glyphicon glyphicon-floppy-disk"></span> Save
+    </button>
+    <a href="@Url.Action("Index", "Service")" class = "btn btn-danger">
+        <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+    </a>
+</div>
+
+@Html.Partial("Handlebars/_KeyValueRow")

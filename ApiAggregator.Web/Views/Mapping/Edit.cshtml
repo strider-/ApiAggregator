@@ -1,0 +1,18 @@
+﻿@model MappingModel
+
+@{
+    ViewBag.Title = "Edit Mapping";
+}
+
+<div class="page-header">
+    <h2>Edit API Mapping</h2>
+</div>
+
+@using(Html.BeginForm("Edit", "Mapping", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    @Html.Partial("_Form", Model)
+}
+
+@section scripts{
+    @Scripts.Render("~/Content/Scripts/mapping")
+}

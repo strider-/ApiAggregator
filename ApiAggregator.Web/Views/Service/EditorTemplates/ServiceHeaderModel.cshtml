@@ -1,0 +1,21 @@
+﻿@model ServiceHeaderModel
+
+@{ Layout = null; }
+
+<tr>
+    <td>        
+        @Html.TextBoxFor(h => h.Header, new {@class="form-control"})               
+        @Html.ValidationMessageFor(h => h.Header, null, new { @class = "text-danger" })
+    </td>
+    <td>       
+        @Html.TextBoxFor(h => h.Value, new {@class="form-control"})
+        @Html.ValidationMessageFor(h => h.Value, null, new { @class = "text-danger" })
+    </td>
+    <td class="table-actions">
+        @Html.HiddenFor(h => h.Id)
+        @Html.HiddenFor(h => h.ServiceId)
+        <button type="button" class="btn btn-danger btn-xs remove-row">
+            <span class="glyphicon glyphicon-remove"></span>
+        </button>
+    </td>
+</tr>

@@ -1,0 +1,19 @@
+﻿@{ 
+    Layout = null;
+    var dict = TempData["Flash"] as Dictionary<FlashType, FlashModel>;
+}
+
+@if(dict != null) 
+{
+    foreach(var kvp in dict) 
+    {
+        <div class="alert alert-@kvp.Key.ToString().ToLower() alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            @if(kvp.Value.Emphasis != null) 
+            {
+                <strong>@kvp.Value.Emphasis</strong><span>&nbsp;&mdash;</span>
+            }            
+            @kvp.Value.Message
+        </div>
+    }
+}

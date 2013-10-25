@@ -1,0 +1,17 @@
+﻿@model ServiceModel
+
+@{
+    ViewBag.Title = "Edit Service";
+}
+<div class="page-header">
+    <h2>Edit Service</h2>
+</div>
+
+@using(Html.BeginForm("Edit", "Service", FormMethod.Post, new{@class="form-horizontal"})) 
+{
+    @Html.Partial("_Form", Model)
+}
+
+@section scripts{
+    @Scripts.Render("~/Content/Scripts/service")
+}

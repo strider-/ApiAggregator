@@ -1,0 +1,21 @@
+﻿@{ Layout = null; }
+
+<script id="delete-template" type="text/x-handlebars-template">
+  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Delete</h4>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to delete '{{name}}'?
+          <div class="alert alert-danger hidden"></div>
+        </div>        
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-danger delete-confirm" data-id="{{id}}" data-type="{{type}}" data-name="{{name}}">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</script>

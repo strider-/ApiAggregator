@@ -1,0 +1,68 @@
+﻿body {
+	background-image: url(img/squairy_light.png);
+}
+
+td.table-actions {
+	vertical-align: middle !important;
+}
+
+.loading {
+	background: url(img/ajax-loader.gif) no-repeat left 2px top 2px #fff;
+	height:35px;
+	width:35px;
+	display:inline-block;
+	vertical-align:middle;
+	margin-left: 10px;
+}
+
+fieldset .popover {
+	min-width: 230px;
+}
+
+.btn-shortcut {
+	display: inline-block;
+	width: 110px;
+	padding: 12px 0;
+	margin: 0 15px 1em;
+	vertical-align: top;
+	text-decoration: none;
+}
+
+.btn-shortcut .shortcut-icon {
+	display: inline-block;
+	margin-top: .25em;
+	margin-bottom: .35em;
+	font-size: 32px;
+	width: 100%;
+}
+
+.btn-shortcut .shortcut-label {
+	display: block;
+}
+
+.panel-shortcut {
+    text-align: center;
+}
+
+.content-container {
+    max-width: 960px;
+}
+
+.home-container {
+    max-width: 768px;
+    margin-top: 50px;
+}
+
+.form-login {
+	max-width: 200px;
+	margin: 0 auto;
+}
+
+.modal-signing {
+    width: 660px;
+}
+
+.modal-round-header {
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}

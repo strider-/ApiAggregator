@@ -1,0 +1,76 @@
+﻿@model IEnumerable<MappingModel>
+
+@{
+    ViewBag.Title = "Mappings";
+}
+
+<div class="row">
+    <div class="page-header">
+        <h2>Available Mappings</h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="btn-group">
+                <a href="@Url.Action("Add")" class="btn btn-success">
+                    <span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Add
+                </a> 
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                        <span class="glyphicon glyphicon-filter"></span>&nbsp;
+                        <span class="current-filter">All</span>
+                    <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu service-filter">
+                        <li><a href="#">All</a></li>
+                        <li class="divider"></li>
+                        @foreach(var s in ViewBag.AvailableServices)
+                        {
+                            <li><a href="#">@s</a></li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Actions</th>
+                    <th>Service Name</th>
+                    <th>Name</th>            
+                    <th>Local Endpoint</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var mapping in Model)
+                {
+                    <tr data-id="@mapping.Id" class="@mapping.RowClass">                
+                        <td>
+                            <a href="@Url.Action("Mapping", "Test", new{id=mapping.Id})" class="btn btn-default btn-xs" title="Test">
+                                <span class="glyphicon glyphicon-cog"></span>
+                            </a>
+                            <a href="@Url.Action("Edit", "Mapping", new{id=mapping.Id})" class="btn btn-default btn-xs" title="Edit">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </a>
+                            <a href="#" class="btn btn-danger btn-xs delete-prompt" data-type="Mapping" data-id="@mapping.Id" data-name="@mapping.Name" title="Delete">
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </a>
+                        </td>
+                        <td>@mapping.ServiceName</td>
+                        <td>@mapping.Name</td>
+                        <td>
+                            @HttpUtility.UrlDecode(Url.HttpRouteUrl("DynamicRoute", new{endpoint=@mapping.Endpoint}))
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+@Html.Partial("Handlebars/_DeleteModal")
+
+@section scripts{
+    @Scripts.Render("~/Content/Scripts/table")
+}

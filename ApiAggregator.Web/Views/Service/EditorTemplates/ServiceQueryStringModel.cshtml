@@ -1,0 +1,21 @@
+﻿@model ServiceQueryStringModel
+
+@{ Layout = null; }
+
+<tr>
+    <td>        
+        @Html.TextBoxFor(q => q.Name, new {@class="form-control"})               
+        @Html.ValidationMessageFor(q => q.Name, null, new { @class = "text-danger" })
+    </td>
+    <td>       
+        @Html.TextBoxFor(q => q.Value, new {@class="form-control"})
+        @Html.ValidationMessageFor(q => q.Value, null, new { @class = "text-danger" })
+    </td>
+    <td class="table-actions">
+        @Html.HiddenFor(q => q.Id)
+        @Html.HiddenFor(q => q.ServiceId)
+        <button type="button" class="btn btn-danger btn-xs remove-row">
+            <span class="glyphicon glyphicon-remove"></span>
+        </button>
+    </td>
+</tr>

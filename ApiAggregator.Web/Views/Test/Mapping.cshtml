@@ -1,0 +1,78 @@
+﻿@model TestModel
+
+@{
+    ViewBag.Title = "Service Api Mapping Test";
+}
+
+@section styles{
+    @Styles.Render("~/Content/Styles/test")
+}
+
+<div class="row">
+    <div class="page-header">
+        <h2>Service Api Mapping Test <small>@Model.Mapping.ServiceName - @Model.Mapping.Name</small></h2>
+    </div>
+    <div class="alert alert-info">
+        <p>Calls the <strong>@Model.Mapping.ServiceName</strong> service, at the <strong>@Model.Mapping.Api</strong> endpoint. (@Model.ServiceUrl)</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="alert alert-danger hidden error">
+        Please enter values for all variables.
+    </div>
+    <form class="form-horizontal" role="form">
+        <fieldset>
+            @if(Model.VariableNames.Any()) 
+            {
+                <legend>Variables</legend>
+            }
+            @foreach(var v in Model.VariableNames)
+            {
+                <div class="form-group">
+                    <label for="@v" class="col-lg-2 control-label">@v</label>
+                    <div class="col-lg-4">
+                        <input type="text" name="@v" class="form-control variable" value="" />
+                    </div>
+                </div>
+            }
+            <div>
+                <input type="hidden" name="id" value="@Model.Mapping.Id" />
+            </div>
+            <div class="well well-sm">
+                @if(Model.VariableNames.Any()) {
+                    <button type="reset" class="btn btn-default reset">
+                        <span class="glyphicon glyphicon-exclamation-sign"></span> Reset
+                    </button>
+                }
+
+                <a href="@Url.Action("Edit", "Mapping",new{Model.Mapping.Id})" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-edit"></span> Edit Mapping
+                </a>
+
+                <div class="btn-group">
+                    <button type="button" class="btn btn-info live">
+                        <span class="glyphicon glyphicon-globe"></span> Live Data
+                    </button>
+        
+                    <button type="button" class="btn btn-info debug">
+                        <span class="glyphicon glyphicon-info-sign"></span> Debug Data
+                    </button>
+                </div>
+
+                <div class="img-circle loading hidden"></div>
+            </div>                        
+        </fieldset>    
+    </form>
+</div>
+
+<div class="row">
+    <pre class="prettyprint lang-js">{
+    "Live": "Data will be fetched from the API & dumped here.",
+    "Debug": "Metadata about the API call will be dumped here, but no data will be fetched."
+}</pre>
+</div>
+
+@section scripts{
+    @Scripts.Render("~/Content/Scripts/test")
+}

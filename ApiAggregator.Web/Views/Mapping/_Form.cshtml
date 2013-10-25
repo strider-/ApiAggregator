@@ -1,0 +1,71 @@
+﻿@model MappingModel
+
+<fieldset>
+    <div class="form-group">
+        @Html.LabelFor(m => m.ServiceId, "Service", new { @class = "col-lg-2 control-label" })
+        <div class="col-lg-4">
+            @Html.DropDownListFor(m => m.ServiceId, ViewBag.AvailableServices as SelectList, new { @class = "form-control", data_content="The service to associate this mapping to." })
+            @Html.ValidationMessageFor(m => m.ServiceId, null, new { @class = "text-danger" })
+        </div>        
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Name, new { @class = "col-lg-2 control-label" })
+        <div class="col-lg-4">
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control",data_content="A friendly reference name for the mapping." })
+            @Html.ValidationMessageFor(m => m.Name, null, new { @class = "text-danger" })
+        </div>        
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Endpoint, new { @class = "col-lg-2 control-label" })
+        <div class="col-lg-6"> 
+            <div class="input-group">
+                <span class="input-group-addon">api/</span>
+                @Html.TextBoxFor(m => m.Endpoint, new { @class = "form-control",data_content="The local endpoint you want to assign. Anything in between { } characters will become a variable."  })            
+            </div>
+            @Html.ValidationMessageFor(m => m.Endpoint, null, new { @class = "text-danger" })
+        </div>                
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Api, new { @class = "col-lg-2 control-label" })
+        <div class="col-lg-6">
+            @Html.TextBoxFor(m => m.Api, new { @class = "form-control",data_content="The relative endpoint of the service to call. Variables created above are valid here."  })
+            @Html.ValidationMessageFor(m => m.Api, null, new { @class = "text-danger" })
+        </div>        
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Method, new { @class = "col-lg-2 control-label" })
+        <div class="col-lg-2">
+            @Html.DropDownListFor(m => m.Method, ViewBag.AvailableMethods as SelectList, new { @class = "form-control", data_content = "The HTTP method for the service mapping endpoint." })
+            @Html.ValidationMessageFor(m => m.Method, null, new { @class = "text-danger" })
+        </div>        
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Enabled, new { @class = "col-lg-2 control-label" })
+        <div class="col-lg-4">
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-default btn-option">
+                    @Html.RadioButton("Enabled", true, Model.Enabled == true, new {@class="form-control", data_highlight="btn-success"}) Yes
+                </label>
+                <label class="btn btn-default btn-option">
+                    @Html.RadioButton("Enabled", false, Model.Enabled == false, new {@class="form-control", data_highlight="btn-danger"}) No
+                </label>
+            </div>
+        </div>       
+    </div>
+    <div class="well well-sm">
+        @Html.HiddenFor(m => m.Id)
+        <button type="submit" class="btn btn-primary">
+            <span class="glyphicon glyphicon-floppy-disk"></span> Save
+        </button>
+
+        @if(Model.Id > 0) {
+            <a href="@Url.Action("Mapping", "Test", new{id=Model.Id})" class="btn btn-default">
+                <span class="glyphicon glyphicon-cog"></span> Test
+            </a>
+        }
+        
+        <a href="@Url.Action("Index", "Mapping")" class = "btn btn-danger">
+            <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+        </a>
+    </div>
+</fieldset>

@@ -1,0 +1,75 @@
+﻿@model IEnumerable<RecentItemModel>
+
+@{
+    ViewBag.Title = "Api Aggregator";
+}
+
+<div class="container home-container">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="glyphicon glyphicon-globe"></span>&nbsp;
+                    Services
+                </div>
+                <div class="panel-body panel-shortcut">
+                    <a href="@Url.Action("Add", "Service")" class="btn btn-default btn-shortcut">
+                        <span class="glyphicon glyphicon-plus-sign shortcut-icon"></span>
+                        <span class="shortcut-label">Add Service</span>
+                    </a>
+                    <a href="@Url.Action("Index", "Service")" class="btn btn-default btn-shortcut">                        
+                            <span class="glyphicon glyphicon-list shortcut-icon"></span>
+                            <span class="shortcut-label">All Services</span>                        
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="glyphicon glyphicon-link"></span>&nbsp;
+                    API Mappings
+                </div>
+                <div class="panel-body panel-shortcut">
+                    <a href="@Url.Action("Add", "Mapping")" class="btn btn-default btn-shortcut">
+                        <span class="glyphicon glyphicon-plus-sign shortcut-icon"></span>
+                        <span class="shortcut-label">Add Mapping</span>
+                    </a>
+                    <a href="@Url.Action("Index", "Mapping")" class="btn btn-default btn-shortcut">
+                        <span class="glyphicon glyphicon-list shortcut-icon"></span>
+                        <span class="shortcut-label">All Mappings</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="list-group">
+                <div class="list-group-item active">
+                    <span class="glyphicon glyphicon-pushpin"></span>&nbsp;
+                    Recently Added
+                </div>
+                @if(!Model.Any())
+                {
+                    <div class="list-group-item">
+                        <span class="glyphicon glyphicon-exclamation-sign text-warning"></span>
+                        Nothing has been added recently.
+                    </div>
+                }
+                @foreach(var item in Model)
+                {
+                    <a href="@item.Url" class="list-group-item">
+                        @if(item.Icon != null)
+                        {
+                            <span class="glyphicon glyphicon-@item.Icon"></span>
+                        }
+                        @item.Name
+                        <span class="pull-right text-muted">@item.Type</span>
+                    </a>                
+                }
+            </div>
+        </div>
+    </div>
+</div>

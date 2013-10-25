@@ -1,0 +1,160 @@
+﻿@model ConfigurationModel
+
+@{
+    ViewBag.Title = "Settings";
+    var options = ViewBag.Options as List<SecurityOptionModel>;
+}
+
+@using(Html.BeginForm("Edit", "Configuration", FormMethod.Post, new{@class="form-horizontal", role="form"}))
+{
+    <fieldset>        
+        <div class="alert alert-danger fade in hidden alert-keygen">
+            <span>There was an error updating the API key!</span>
+        </div>
+        <h3 class="page-header">Site Management</h3>
+        <div class="form-group">
+            <label for="requirelogin" class="col-lg-3 control-label">Require Login</label>
+            <div class="col-lg-4">
+                <div class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-default btn-option">
+                        @Html.RadioButton("RequireLogin", true, Model.RequireLogin == true, new {@class="form-control", data_highlight="btn-success"}) Yes
+                    </label>
+                    <label class="btn btn-default btn-option">
+                        @Html.RadioButton("RequireLogin", false, Model.RequireLogin == false, new {@class="form-control", data_highlight="btn-danger"}) No
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="requirelogin" class="col-lg-3 control-label">Google Authenticator</label>
+            <div class="col-lg-4">
+                <div class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-default btn-option">
+                        @Html.RadioButton("RequireAuthenticator", true, Model.RequireAuthenticator == true, new {@class="form-control", data_highlight="btn-info"}) Yes
+                    </label>
+                    <label class="btn btn-default btn-option">
+                        @Html.RadioButton("RequireAuthenticator", false, Model.RequireAuthenticator == false, new {@class="form-control", data_highlight="btn-info"}) No
+                    </label>                    
+                </div>
+                <button type="button" class="btn btn-default"> QR Setup Code</button>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Username, new { @class = "col-lg-3 control-label" })
+            <div class="col-lg-3">
+                @Html.TextBoxFor(m => m.Username, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Username, null, new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Password, new { @class = "col-lg-3 control-label" })
+            <div class="col-lg-3">
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Password, null, new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.PasswordConfirm, new { @class = "col-lg-3 control-label" })
+            <div class="col-lg-3">
+                @Html.PasswordFor(m => m.PasswordConfirm, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.PasswordConfirm, null, new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <h3 class="page-header">API Security</h3>
+        <div class="form-group">
+            @Html.LabelFor(m => m.ApiKey, "API Key", new{@class="col-lg-2 control-label"})
+            <div class="col-lg-6">
+                <div class="input-group">
+                @Html.TextBoxFor(m => m.ApiKey, new { @class = "form-control input-apikey text-center", disabled="" })
+                    <span class="input-group-btn">                          
+                    <button class="btn btn-warning btn-keygen" type="button">
+                        <span class="glyphicon glyphicon-refresh"></span>
+                        Generate
+                    </button>
+                    </span>                                        
+                </div>
+                <span class="help-block"><strong class="text-warning">Generating a new API key will take effect immediately!</strong></span>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(m => m.DescribeAtRoot, new{@class="col-lg-2 control-label"})
+            <div class="col-lg-6">
+                <div class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-default btn-option">
+                        @Html.RadioButton("DescribeAtRoot", true, Model.DescribeAtRoot == true, new {@class="form-control", data_highlight="btn-info"}) Enabled
+                    </label>
+                    <label class="btn btn-default btn-option">
+                        @Html.RadioButton("DescribeAtRoot", false, Model.DescribeAtRoot == false, new {@class="form-control", data_highlight="btn-info"}) Disabled
+                    </label>
+                </div>
+                <span class="help-block"><strong class="text-info">When enabled, returns an index of all available local endpoints at the api root.</strong></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="options" class="col-lg-2 control-label">Security Options</label>
+            <div class="col-lg-8">
+                <div class="btn-group" data-toggle="buttons">
+                   @foreach(var opt in options)
+                   {
+                       <label class="btn btn-default btn-option">
+                           @Html.RadioButton("SecurityOption", opt.Option, opt.Option == Model.SecurityOption, new { @class = "form-control", data_info = opt.Description, id = "opt_" + opt.Option, data_highlight="btn-info" }) @opt.Name
+                       </label>
+                   }
+                </div>
+                <span class="help-block"><strong class="text-info help-desc"></strong></span>
+            </div>
+        </div>
+
+        <div class="row well well-sm">        
+            <button type="submit" class="btn btn-primary">
+                <span class="glyphicon glyphicon-floppy-disk"></span> Save
+            </button>
+            <a href="@Url.Action("Index", "Home")" class = "btn btn-danger">
+                <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+            </a>
+            <a data-toggle="modal" href="#signing" class="btn btn-info pull-right">Request Signing</a>
+        </div>
+    </fieldset>
+}
+
+<div id="signing" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-signing">
+      <div class="modal-content">
+        <div class="modal-header modal-round-header alert-info">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">How to Sign API Requests</h4>
+        </div>
+        <div class="modal-body">
+          <p>To create a signature, start by creating a string in the following format:</p>
+            <pre>"[" + &lt;http verb&gt; + "\n" + &lt;date&gt; + "\n" + &lt;path &amp; query&gt; + "]"</pre>
+            <pre>&lt;http verb&gt;    := The verb used to hit this api
+&lt;date&gt;         := Date in RFC1123 format (ddd, dd MMM yyyy HH:mm:ss GMT)
+&lt;path &amp; query&gt; := The endpoint + querystring you're requesting</pre>
+            <p>
+                Using HMAC-SHA256 &amp; your API key as the hash key, compute the hash of the resulting string, and Base64 encode the hash result.
+                Send the date in the 'Request-Date' request header, and set the 'Authorization' request header using a scheme of 'signature' and
+                the Base64 encoded hash as the parameter.
+            </p>
+            <p>
+                The date will be validated by the server and requests outside of a small window of time will be rejected.
+            </p>
+            <hr />
+            <p><strong>Sample Request Headers</strong></p>
+            <pre><a href="#" class="tt" data-toggle="tooltip" data-placement="top" title="HTTP Verb">GET</a> <a href="#" class="tt" data-toggle="tooltip" data-placement="top" title="Path &amp; Query">/api/an/endpoint</a> HTTP/1.1
+Host: www.thishost.example
+Request-Date: <a href="#" class="tt" data-toggle="tooltip" data-placement="top" title="RFC1123 Formatted Date">Wed, 11 Sep 2013 20:31:10 GMT</a>
+Authorization: signature <a href="#" class="tt" data-toggle="tooltip" data-placement="bottom" title="Base64 Encoded HMAC-SHA256 Hash">SGFoYWhhaCB5ZWFoIG9rIG5pY2UgdHJ5IHRob3VnaCE=</a></pre>            
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+@section scripts{
+    @Scripts.Render("~/Content/Scripts/configuration")
+}
